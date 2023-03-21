@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 public class Player : MonoBehaviour , IDamageable
 {
     private Rigidbody2D rb;
-    private float jumpForce = 300f;
+    private float jumpForce = 350f;
     private PlayerInputActions playerInput;
     private InputAction movement;
 
