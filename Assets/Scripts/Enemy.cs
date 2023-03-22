@@ -38,6 +38,7 @@ public class Enemy : MonoBehaviour, IDamageable, IDestructible {
     private IEnumerator Shoot() {
         shooting = true;
         yield return new WaitForSeconds(0.5f);
+        AudioManager.Instance.PlaySound("enemy_throw");
         if (target) {
             float dir = Mathf.Sign(target.position.x - transform.position.x);
             Debug.Log(dir);
@@ -67,6 +68,7 @@ public class Enemy : MonoBehaviour, IDamageable, IDestructible {
 
     private void gotStomped() {
         Debug.Log("got stomped on head!");
+        AudioManager.Instance.PlaySound("enemy_squash");
         getHit(100);
     }
 
@@ -76,9 +78,8 @@ public class Enemy : MonoBehaviour, IDamageable, IDestructible {
     }
 
     public IEnumerator die() {
-        Debug.Log("I am die.");
+        Debug.Log("I am die.");        
         yield return new WaitForSeconds(0);
         Destroy(this.gameObject);
-
     }
 }

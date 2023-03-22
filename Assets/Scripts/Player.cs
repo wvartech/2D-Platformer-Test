@@ -116,7 +116,7 @@ public class Player : MonoBehaviour , IDamageable
     }
 
     private void StartAttack(InputAction.CallbackContext obj) {
-        if (!attacking) {
+        if (!attacking && !stunned) {
             StartCoroutine(Attack());
         }
         
@@ -125,6 +125,7 @@ public class Player : MonoBehaviour , IDamageable
 
     private IEnumerator Attack() {
         attacking = true; animator.SetBool(ATTACKING, true);
+        AudioManager.Instance.PlaySound("slash");
         yield return new WaitForSeconds(0.25f);
         HitCheck(1);
         attacking = false; animator.SetBool(ATTACKING,false);
@@ -145,6 +146,7 @@ public class Player : MonoBehaviour , IDamageable
             if (target != null) {
                 Debug.Log($"Hit {collider.gameObject.name}");
                 target.getHit(100);
+                AudioManager.Instance.PlaySound("slash_hit");
             }
         }
         
@@ -161,7 +163,7 @@ public class Player : MonoBehaviour , IDamageable
     }
 
     public void getHit(int dmg) {
-        
+        AudioManager.Instance.PlaySound("flinch");
         HEALTH -= dmg;
         if (HEALTH < 0) { HEALTH = 0; }
         if(HEALTH <= 0) { StartCoroutine(die()); } else { StartCoroutine(GetStunned(0.6f)); }
@@ -171,6 +173,7 @@ public class Player : MonoBehaviour , IDamageable
         Debug.Log("I am die thank you forever.");
         stunned = true; animator.SetBool(STUNNED, true);
         yield return new WaitForSeconds(1.2f);
+        AudioManager.Instance.PlaySound("player_die");
 
         Destroy(this.gameObject);
     }

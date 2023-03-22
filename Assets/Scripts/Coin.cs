@@ -11,6 +11,7 @@ public class Coin : MonoBehaviour
         if (player) {
             Debug.Log("Player entered!");
             GameManager.Instance.AddScore(coinValue);
+            AudioManager.Instance.PlaySound("coin_get");
             Destroy(this.gameObject);
         }
     }
