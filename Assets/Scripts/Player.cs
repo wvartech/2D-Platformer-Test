@@ -28,6 +28,15 @@ public class Player : MonoBehaviour , IDamageable
     private bool stunned = false;
     private bool attacking = false;
     [SerializeField] GroundCheck groundCheck;
+    private bool isTouchingWallLeft = false;
+    private bool isTouchingWallRight = false;
+        
+    [SerializeField] LayerMask wallLayer;
+    private Vector2 wallCheckBoxSize = new Vector2(0.05f, 0.6f);
+    private float centerOffsetFix = 0.1f;
+    private float verticalOffsetFix = 0.08f;
+    private float wallCheckOffset = 0.13f;
+
 
     public int HEALTH {get;set;} = 3;
 
@@ -86,9 +95,22 @@ public class Player : MonoBehaviour , IDamageable
 
     }
 
+    private void OnDrawGizmos() {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireCube(transform.position + new Vector3(centerOffsetFix - wallCheckOffset, verticalOffsetFix, 0), wallCheckBoxSize);
+        Gizmos.DrawWireCube(transform.position + new Vector3(centerOffsetFix + wallCheckOffset, verticalOffsetFix, 0), wallCheckBoxSize);
+    }
+
     private void FixedUpdate() {
         
         if (Xmovement != 0) {
+
+            isTouchingWallLeft = Physics2D.OverlapBox(transform.position + new Vector3(centerOffsetFix - wallCheckOffset,verticalOffsetFix,0), wallCheckBoxSize, 0, wallLayer);
+            isTouchingWallRight = Physics2D.OverlapBox(transform.position + new Vector3(centerOffsetFix + wallCheckOffset,verticalOffsetFix,0), wallCheckBoxSize, 0, wallLayer);
+
+            if (isTouchingWallLeft && Xmovement < 0) { Xmovement = 0; }
+            if(isTouchingWallRight && Xmovement > 0) { Xmovement = 0; }
+
             rb.velocity = new Vector2(Xmovement * moveSpeed, rb.velocity.y);
         }
     }

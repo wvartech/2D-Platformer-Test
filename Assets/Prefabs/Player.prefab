@@ -243,6 +243,9 @@ MonoBehaviour:
   spriteRenderer: {fileID: 700794548054689784}
   spriteContainer: {fileID: 700794548054689781}
   groundCheck: {fileID: 700794548203461987}
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 8
 --- !u!61 &700794548576298263
 BoxCollider2D:
   m_ObjectHideFlags: 0
